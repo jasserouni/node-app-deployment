@@ -1,0 +1,26 @@
+- name: Create a security group
+  amazon.aws.ec2_security_group:
+    name: node-todo-sg
+    description: Security group for Node.js ToDo app
+    region: eu-north-1
+    rules:
+      - proto: tcp
+        ports:
+          - 22
+        cidr_ip: "{{ lookup('http://ipinfo.io/ip').strip() }}/32"
+        rule_desc: Allow SSH access from my IP
+      - proto: tcp
+        ports:
+          - 80
+        cidr_ip: "0.0.0.0/0"
+        rule_desc: Allow HTTP access from anywhere
+      - proto: tcp
+        ports:
+          - 3000
+        cidr_ip: "0.0.0.0/0"
+        rule_desc: Allow Node.js app traffic from anywhere
+    rules_egress:
+      - proto: all
+        cidr_ip: "0.0.0.0/0"
+    state: present
+

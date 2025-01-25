@@ -1,0 +1,19 @@
+---
+- name: Create ECS Service with Load Balancer
+  amazon.aws.ecs_service:
+    name: node-todo-service
+    cluster: node-todo-cluster
+    task_definition: "{{ task_definition.taskDefinition.taskDefinitionArn }}"
+    desired_count: 2                 # Number of tasks to run
+    launch_type: FARGATE
+    load_balancers:
+      - target_group_arn: "{{ target_group.target_group_arn }}"
+        container_name: node-todo-container
+        container_port: 3000
+    network_configuration:
+      awsvpc_configuration:
+        subnets:
+          - subnet-002a5ce8983d882ce
+        assign_public_ip: "ENABLED"
+        security_groups:
+          - sg-01fd5ce1808538dcf

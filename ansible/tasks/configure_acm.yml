@@ -1,0 +1,11 @@
+---
+- name: Request an ACM certificate
+  amazon.aws.acm_certificate:
+    state: present
+    domain_name: "nodeapp.com"
+    validation_method: DNS
+  register: acm_cert
+
+- name: Output ACM Certificate ARN
+  debug:
+    msg: "ACM Certificate ARN: {{ acm_cert.certificate_arn }}"

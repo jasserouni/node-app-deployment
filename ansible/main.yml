@@ -1,0 +1,31 @@
+---
+- name: Deploy Node.js ToDo App on AWS
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Ensure prerequisites are met
+      include_tasks: tasks/provision_env .yml
+
+    - name: Create Security Group
+      include_tasks: tasks/create_security_group.yml
+
+    - name: Create ECS Task Execution Role
+      include_tasks: tasks/create_iam_role.yml
+
+    - name: Create ACM Certificate
+      include_tasks: tasks/configure_acm.yml
+
+    - name: Create an ALB and Target Group
+      include_tasks: tasks/create_alb.yml
+
+    - name: Create ECR Repository
+      include_tasks: tasks/create_ecr.yml
+
+    - name: Build and Push Docker Image to ECR
+      include_tasks: tasks/build_push_ecr.yml
+
+    - name: Deploy ECS Cluster and Service
+      include_tasks: tasks/deploy_ecs.yml
+
+    - name: Configure Route 53
+      include_tasks: tasks/configure_route53.yml
