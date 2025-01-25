@@ -34,9 +34,7 @@ This repository automates the deployment of the [Node.js ToDo App](https://githu
 ├── .github/                       # GitHub Actions workflow directory
 │   ├── workflows/
 │   │   ├── deploy.yml             # Workflow for automated deployment
-├── vars/
-│   ├── vars.yml                   # Centralized variables for deployment
-├── README.md                      # Documentation
+├── README_task2.md                      # Documentation
 ```
 
 **Explanation of Key Files and Directories**
