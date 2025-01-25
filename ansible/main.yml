@@ -7,7 +7,7 @@
       include_tasks: tasks/provision_env.yml
 
     - name: Create Security Group
-      include_tasks: tasks/create_security_group.yml
+      include_tasks: tasks/create_security_groups.yml
 
     - name: Create ECS Task Execution Role
       include_tasks: tasks/create_iam_role.yml
