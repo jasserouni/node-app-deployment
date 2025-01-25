@@ -1,0 +1,45 @@
+---
+- name: Create an Application Load Balancer (ALB)
+  amazon.aws.elb_application_lb:
+    name: node-todo-alb
+    subnets:
+      - subnet-002a5ce8983d882ce
+    security_groups:
+      - sg-01fd5ce1808538dcf
+    state: present
+    wait: yes
+  register: alb
+
+- name: Create a Target Group
+  amazon.aws.elb_target_group:
+    name: node-todo-tg
+    protocol: HTTP
+    port: 3000
+    vpc_id: vpc-0a45b2ba8534ce6bd
+    health_check_path: /
+    target_type: ip
+  register: target_group
+
+- name: Create an ALB Listener (HTTP)
+  amazon.aws.elb_listener:
+    state: present
+    load_balancer_arn: "{{ alb.load_balancer_arn }}"
+    protocol: HTTP
+    port: 80
+    default_actions:
+      - Type: forward
+        TargetGroupArn: "{{ target_group.target_group_arn }}"
+  register: alb_listener_http
+
+- name: Create an ALB Listener (HTTPS)
+  amazon.aws.elb_listener:
+    state: present
+    load_balancer_arn: "{{ alb.load_balancer_arn }}"
+    protocol: HTTPS
+    port: 443
+    certificates:
+      - CertificateArn: "{{ acm_cert.certificate_arn }}"
+    default_actions:
+      - Type: forward
+        TargetGroupArn: "{{ target_group.target_group_arn }}"
+  when: acm_cert is defined

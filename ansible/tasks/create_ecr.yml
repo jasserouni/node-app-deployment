@@ -1,0 +1,6 @@
+---
+- name: Create an ECR repository
+  amazon.aws.ecr_repository:
+    name: node-todo-app
+    state: present
+  register: ecr_repo

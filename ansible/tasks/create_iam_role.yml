@@ -1,0 +1,26 @@
+---
+- name: Create ECS Task Execution Role
+  amazon.aws.iam_role:
+    name: ecsTaskExecutionRole
+    state: present
+    assume_role_policy_document: >
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "ecs-tasks.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      }
+  register: ecs_role
+
+- name: Attach ECS Task Execution Policy to the Role
+  amazon.aws.iam_policy_attachment:
+    name: ecsTaskExecutionRole-attachment
+    roles:
+      - ecsTaskExecutionRole
+    policy_arn: arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy

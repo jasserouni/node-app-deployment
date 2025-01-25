@@ -1,0 +1,20 @@
+---
+- name: Authenticate Docker with ECR
+  ansible.builtin.shell: |
+    aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin {{ ecr_repo.repository.repository_uri.split('/')[0] }}
+  no_log: true
+
+- name: Build Docker image for Node.js app
+  community.docker.docker_image:
+    name: node-todo-app
+    build:
+      path: ../node-app/
+    tag: latest
+
+- name: Tag Docker image for ECR
+  ansible.builtin.shell: |
+    docker tag node-todo-app:latest {{ ecr_repo.repository.repository_uri }}:latest
+
+- name: Push Docker image to ECR
+  ansible.builtin.shell: |
+    docker push {{ ecr_repo.repository.repository_uri }}:latest
