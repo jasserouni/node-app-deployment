@@ -1,20 +1,22 @@
 - name: Fetch public IP address
-  set_fact:
-    public_ip: "{{ lookup('community.general.ipinfo', 'ip') }}"
+  uri:
+    url: http://ipinfo.io/ip
+    return_content: yes
+  register: public_ip
 
 - name: Debug public IP
   debug:
-    var: public_ip
+    var: public_ip.content
 
 - name: Create a security group
   amazon.aws.ec2_group:
     name: my-security-group
     description: Security group for my app
-    vpc_id: "{{ vpc_id }}"
+    vpc_id: vpc-0a45b2ba8534ce6bd
     rules:
       - proto: tcp
         ports:
           - 22
-        cidr_ip: "{{ public_ip }}/32"
+        cidr_ip: "{{ public_ip.content | trim }}/32"
     state: present
 
