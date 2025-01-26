@@ -1,7 +1,7 @@
 ---
 - name: Install required Ansible collections
   ansible.builtin.command:
-    cmd: ansible-galaxy collection install amazon.aws
+    cmd: ansible-galaxy collection install amazon.aws community.general
   register: ansible_collections_result
   changed_when: ansible_collections_result.rc == 0
   failed_when: ansible_collections_result.rc != 0
