@@ -1,6 +1,6 @@
 ---
 - name: Request an ACM certificate
-  amazon.aws.acm_certificate:
+  community.aws.acm_certificate:
     state: present
     domain_name: example.com
     validation_method: DNS
