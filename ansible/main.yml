@@ -9,6 +9,9 @@
     - name: Create ECS Task Execution Role
       include_tasks: tasks/create_iam_role.yml
 
+    - name: Generate Key pairs for ACM cert
+      include_tasks: tasks/generate_key_pairs.yml
+
     - name: Create ACM Certificate
       include_tasks: tasks/configure_acm.yml
 
