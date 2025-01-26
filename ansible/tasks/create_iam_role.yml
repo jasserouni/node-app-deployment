@@ -1,6 +1,6 @@
 ---
 - name: Create ECS Task Execution Role
-  amazon.aws.iam_role:
+  community.aws.iam_role:
     name: ecsTaskExecutionRole
     description: "Role for ECS task execution"
     assume_role_policy_document:
@@ -14,7 +14,7 @@
   register: ecs_role
 
 - name: Attach ECS Task Execution Role Policy
-  amazon.aws.iam_policy:
+  community.aws.iam_policy:
     iam_type: role
     iam_name: ecsTaskExecutionRole
     policy_name: AmazonECSTaskExecutionRolePolicy
