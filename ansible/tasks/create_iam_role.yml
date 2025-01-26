@@ -23,4 +23,3 @@
 - name: Debug created ECS role
   debug:
     var: ecs_role
-
