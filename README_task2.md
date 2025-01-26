@@ -60,20 +60,9 @@ This directory contains the GitHub Actions workflows:
 - deploy.yml: Automates the deployment process by running Ansible playbooks when changes are pushed to the repository 
 or manually triggered.
 
-**Deployment Options**
+**Deployment**
 
-1. Local Deployment with Ansible
-Run the Ansible playbook locally to deploy the app:
-```bash
-ansible-playbook playbooks/main.yml
-```
-This will:
-
-Create the necessary ECR repository.
-Build and push the Docker image.
-Deploy the app to an ECS Fargate cluster.
-
-2. CI/CD Deployment with GitHub Actions
+CI/CD Deployment with GitHub Actions
 The GitHub Actions workflow is triggered automatically on:
 
 Pushes to the main branch.

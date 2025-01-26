@@ -24,6 +24,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install ansible boto3 botocore docker ansible[amazon]
 
+      - name: Install Ansible Galaxy Collections
+        run: |
+          ansible-galaxy collection install amazon.aws community.general
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:

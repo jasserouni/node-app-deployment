@@ -3,9 +3,6 @@
   hosts: localhost
   gather_facts: no
   tasks:
-    - name: Ensure prerequisites are met
-      include_tasks: tasks/provision_env.yml
-
     - name: Create Security Group
       include_tasks: tasks/security_groups.yml
 
