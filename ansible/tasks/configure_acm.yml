@@ -1,9 +1,11 @@
 ---
 - name: Request an ACM certificate
-  amazon.aws.acm_certificate:
+  community.aws.acm_certificate:
     state: present
-    domain_name: "nodeapp.com"
-    validation_method: DNS
+    domain_name: nodeapp.com
+    certificate: "{{ lookup('file', 'cert.pem' ) }}"
+    private_key: "{{ lookup('file', 'key.pem' ) }}"
+    name_tag: aws_cert
   register: acm_cert
 
 - name: Output ACM Certificate ARN

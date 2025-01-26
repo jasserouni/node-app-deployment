@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ansible boto3 botocore docker ansible[amazon]
+          pip install ansible boto3 botocore docker
 
       - name: Install Ansible Galaxy Collections
         run: |

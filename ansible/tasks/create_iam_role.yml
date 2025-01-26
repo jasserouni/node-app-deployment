@@ -16,8 +16,19 @@
 - name: Attach ECS Task Execution Role Policy
   amazon.aws.iam_policy:
     iam_type: role
-    name: ecsTaskExecutionRole
-    policy_arn: arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+    iam_name: ecsTaskExecutionRole
+    policy_name: AmazonECSTaskExecutionRolePolicy
+    policy_json: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": "*"
+          }
+        ]
+      }
     state: present
 
 - name: Debug created ECS role
