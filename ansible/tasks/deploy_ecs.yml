@@ -1,6 +1,6 @@
 ---
 - name: Create ECS Service with Load Balancer
-  amazon.aws.ecs_service:
+  community.aws.ecs_service:
     name: node-todo-service
     cluster: node-todo-cluster
     task_definition: "{{ task_definition.taskDefinition.taskDefinitionArn }}"

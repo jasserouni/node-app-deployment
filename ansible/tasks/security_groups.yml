@@ -10,7 +10,7 @@
 
 - name: Create a security group
   amazon.aws.ec2_group:
-    name: my-security-group
+    name: node-todo-security-group
     description: Security group for my app
     vpc_id: vpc-0a45b2ba8534ce6bd
     rules:

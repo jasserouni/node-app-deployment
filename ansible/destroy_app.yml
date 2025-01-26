@@ -1,0 +1,72 @@
+---
+- name: Destroy Node.js App Resources on AWS
+  hosts: localhost
+  gather_facts: false
+  vars:
+    aws_region: "eu-north-1"
+    cluster_name: "node-todo-cluster"
+    service_name: "node-todo-service"
+    repository_name: "node-todo-app"
+    target_group_name: "node-todo-tg"
+    load_balancer_name: "node-todo-alb"
+    iam_role_name: "ecsTaskExecutionRole"
+    security_group_name: "node-todo-security-group"
+    domain_name: "nodeapp.com"
+    route53_zone_name: "nodeapp.com"
+
+  tasks:
+    - name: Delete ECS Service
+      community.aws.ecs_service:
+        cluster: "{{ cluster_name }}"
+        service: "{{ service_name }}"
+        state: absent
+
+    - name: Delete ECS Cluster
+      community.aws.ecs_cluster:
+        name: "{{ cluster_name }}"
+        state: absent
+
+    - name: Delete ECR Repository
+      amazon.aws.ecs_ecr:
+        name: "{{ repository_name }}"
+        state: absent
+        force: true  # Force delete even if images are present
+
+    - name: Delete Target Groups
+      community.aws.elb_target_group:
+        name: "{{ target_group_name }}"
+        state: absent
+
+    - name: Delete Load Balancer
+      community.aws.elb_application_lb:
+        name: "{{ load_balancer_name }}"
+        state: absent
+
+    - name: Detach Policies from IAM Role
+      community.aws.iam_policy_attachment:
+        name: ecsTaskExecutionRolePolicyAttachment
+        entities:
+          - "{{ iam_role_name }}"
+        state: absent
+
+    - name: Delete IAM Role
+      community.aws.iam_role:
+        name: "{{ iam_role_name }}"
+        state: absent
+
+    - name: Delete Security Group
+      amazon.aws.ec2_group:
+        name: "{{ security_group_name }}"
+        state: absent
+
+    - name: Delete ACM Certificate
+      community.aws.acm_certificate:
+        domain_name: "{{ domain_name }}"
+        state: absent
+
+    - name: Delete Route 53 DNS Record
+      amazon.aws.route53:
+        zone: "{{ route53_zone_name }}"
+        record: "{{ subdomain_name }}"
+        type: A
+        state: absent

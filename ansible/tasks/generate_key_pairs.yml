@@ -3,8 +3,21 @@
   community.crypto.openssl_privatekey:
     path: key.pem
 
-- name: Generate a Self Signed OpenSSL certificate
+- name: Generate a CA certificate
   community.crypto.x509_certificate:
-    path: ca_cert.crt
+    path: ca_cert.pem
     privatekey_path: key.pem
     provider: selfsigned
+
+- name: Generate a certificate signing request (CSR)
+  community.crypto.openssl_csr:
+    path: cert.csr
+    privatekey_path: key.pem
+
+- name: Sign the CSR with CA
+  community.crypto.x509_certificate:
+    path: cert.pem
+    csr_path: cert.csr
+    ownca_privatekey_path: key.pem
+    provider: ownca
+    ownca_path: ca_cert.pem
