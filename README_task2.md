@@ -18,23 +18,28 @@ This repository automates the deployment of the [Node.js ToDo App](https://githu
 ```bash
 .
 ├── playbooks/
-│   ├── main.yml                   # Main Ansible playbook
+│   ├── main.yml    
+│   ├── destroy_app.yml
+│   ├── inventory.yml              
 │   ├── tasks/
-│   │   ├── prerequisites.yml      # Ensures required tools and environment are ready
-│   │   ├── create_security_group.yml # Creates the AWS security group
-│   │   ├── create_iam_role.yml    # Creates ECS Task Execution Role
-│   │   ├── create_ecr.yml         # Creates an AWS ECR repository
-│   │   ├── build_push_ecr.yml     # Builds and pushes Docker image to ECR
-│   │   ├── deploy_ecs.yml         # Configures ECS cluster and service
-├── node-todo-app/                 # Node.js application directory
-│   ├── Dockerfile                 # Docker configuration for the app
-│   ├── package.json               # Node.js project dependencies
-│   ├── package-lock.json          # Exact dependency versions
-│   ├── server.js                  # Main server file for the app
-├── .github/                       # GitHub Actions workflow directory
+│   │   ├── configure_acm.yml
+│   │   ├── security_groups.yml
+│   │   ├── create_iam_role.yml
+│   │   ├── create_ecr.yml
+│   │   ├── build_push_ecr.yml
+│   │   ├── deploy_ecs.yml
+│   │   ├── configure_route53.yml
+│   │   ├── create_alb.yml
+│   │   ├── generate_key_pairs.yml
+├── node-todo-app/
+│   ├── Dockerfile                 
+│   ├── package.json               
+│   ├── package-lock.json          
+│   ├── server.js                  
+├── .github/                       
 │   ├── workflows/
-│   │   ├── deploy.yml             # Workflow for automated deployment
-├── README_task2.md                      # Documentation
+│   │   ├── ansible_deploy.yml  
+│   │   ├── ansible_destroy.yml          
 ```
 
 **Explanation of Key Files and Directories**
@@ -44,10 +49,6 @@ This directory contains Ansible playbooks and modular task files:
 
 - main.yml: The main playbook that coordinates the deployment process.
 - tasks/: Contains modular tasks to handle specific parts of the deployment, such as:
-- Setting up prerequisites (provision_env.yml).
-- Creating AWS resources like security groups and ECR (create_security_group.yml, create_ecr.yml).
-- Building and pushing the Docker image (build_push_ecr.yml).
-- Deploying the app to ECS (deploy_ecs.yml).
 
 2. node-todo-app/
 The Node.js application directory:
@@ -63,6 +64,15 @@ or manually triggered.
 **Deployment**
 
 CI/CD Deployment with GitHub Actions
+This workflow is responsible for creating the AWS resources required for the application:
+
+- VPC and networking components.
+- ECR repository.
+- ECS cluster and task definitions.
+- Load Balancer and target groups.
+- ACM.
+- Route53.
+
 The GitHub Actions workflow is triggered automatically on:
 
 Pushes to the main branch.
