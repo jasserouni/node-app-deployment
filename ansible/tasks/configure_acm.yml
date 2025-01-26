@@ -1,10 +1,11 @@
 ---
-- name: Request an ACM certificate
+- name: create a certificate
   community.aws.acm_certificate:
+    certificate: "{{ lookup('file', 'ca_cert.crt' ) }}"
+    private_key: "{{ lookup('file', 'key.pem' ) }}"
+    name_tag: aws_cert
     state: present
-    domain_name: example.com
-    validation_method: DNS
-  register: certificate_result
+  register: cert_create
 
 - name: Output ACM Certificate ARN
   debug:

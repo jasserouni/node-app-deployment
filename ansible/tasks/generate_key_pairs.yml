@@ -1,0 +1,10 @@
+---
+- name: Generate an OpenSSL private key
+  community.crypto.openssl_privatekey:
+    path: key.pem
+
+- name: Generate a Self Signed OpenSSL certificate
+  community.crypto.x509_certificate:
+    path: ca_cert.crt
+    privatekey_path: key.pem
+    provider: selfsigned
